@@ -7,7 +7,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from cachetools import TTLCache
 from typing import Tuple
-from proto import FreeFire_pb2, main_pb2, AccountPersonalShow_pb2
+from proto import FreeFire_pb2, sample_pb2, AccountPersonalShow_pb2
 from google.protobuf import json_format, message
 from google.protobuf.message import Message
 from Crypto.Cipher import AES
@@ -109,7 +109,7 @@ async def GetAccountInformation(uid, unk, region, endpoint):
     region = region.upper()
     if region not in SUPPORTED_REGIONS:
         raise ValueError(f"Unsupported region: {region}")
-    payload = await json_to_proto(json.dumps({'a': uid, 'b': unk}), main_pb2.GetPlayerPersonalShow())
+    payload = await json_to_proto(json.dumps({'a': uid, 'b': unk}), sample_pb2.GetPlayerPersonalShow())
     data_enc = aes_cbc_encrypt(MAIN_KEY, MAIN_IV, payload)
     token, lock, server = await get_token_info(region)
     headers = {
@@ -250,3 +250,4 @@ if __name__ == '__main__':
     except Exception as e:
         print(f"[⚠️] Startup warning: {e} — continuing without full initialization")
     app.run(host='0.0.0.0', port=port, debug=False)
+    
