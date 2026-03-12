@@ -241,15 +241,13 @@ async def startup():
     await initialize_tokens()
     asyncio.create_task(refresh_tokens_periodically())
     import sys
+
+if __name__ == '__main__':
+    port = int(sys.argv[1]) if len(sys.argv) > 1 else 5000
+    print(f"[🚀] Starting {__name__.upper()} on port {port} ...")
+    try:
+        asyncio.run(startup())
+    except Exception as e:
+        print(f"[⚠️] Startup warning: {e} — continuing without full initialization")
+    app.run(host='0.0.0.0', port=port, debug=False)
     
-import os
-
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
