@@ -227,7 +227,14 @@ def get_account_info_with_region():
         return jsonify(formatted), 200
     except Exception as e:
         return jsonify({"error": f"Failed to fetch account info: {str(e)}"}), 500
+@app.route("/")
+def home():
+    return "OK", 200
 
+@app.route("/health")
+def health():
+    return "OK", 200
+    
 @app.route('/refresh', methods=['GET', 'POST'])
 def refresh_tokens_endpoint():
     try:
